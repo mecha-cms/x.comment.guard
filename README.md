@@ -4,6 +4,6 @@ Comment Guard Extension for Mecha
 Release Notes
 -------------
 
-### master
+### 1.0.0
 
- - Testing out the basic security in https://dte.web.id
+ - Initial release.
