@@ -1,6 +1,6 @@
-<?php namespace _\lot\x\comment;
+<?php namespace x;
 
-function guard($path) {
+function comment__guard($path) {
     $link_max = 5;
     if (\Request::is('Post')) {
         $error = 0;
@@ -57,4 +57,4 @@ function guard($path) {
     }
 }
 
-\Route::hit('.comment/*', __NAMESPACE__ . "\\guard", 0);
+\Route::hit('.comment/*', __NAMESPACE__ . "\\comment__guard", 0);
