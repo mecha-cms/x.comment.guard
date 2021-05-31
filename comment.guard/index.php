@@ -1,11 +1,13 @@
 <?php namespace x;
 
-function comment__guard($path) {
+function comment__guard($any) {
     $link_max = 5;
     if (\Request::is('Post')) {
         $error = 0;
         $lot = (array) \Post::get('comment');
-        if ($content = ($lot['content'] ?? "")) {
+        $content = $lot['content'] ?? "";
+        $email = $lot['email'] ?? "";
+        if ($content) {
             if (
                 false !== \strpos($content, '://') &&
                 \preg_match_all('/\bhttps?:\/\/\S+/', $content, $m)
@@ -26,7 +28,7 @@ function comment__guard($path) {
                 }
             }
         }
-        if ($email = ($lot['email'] ?? "")) {
+        if ($email) {
             foreach (\stream(__DIR__ . \DS . 'email.txt') as $v) {
                 if ("" === ($v = \trim($v))) {
                     continue;
@@ -51,8 +53,9 @@ function comment__guard($path) {
             }
         }
         if ($error > 0) {
+            unset($lot['token']);
             \Session::set('form.comment', $lot);
-            \Guard::kick($path);
+            \Guard::kick($any);
         }
     }
 }
