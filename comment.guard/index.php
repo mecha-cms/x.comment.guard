@@ -55,7 +55,7 @@ function comment__guard($any) {
         if ($error > 0) {
             unset($lot['token']);
             \Session::set('form.comment', $lot);
-            \Guard::kick($any);
+            \Guard::kick('/' . $any);
         }
     }
 }
