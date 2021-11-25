@@ -3,7 +3,7 @@ title: Comment Guard
 description: Basic security for the comment extension.
 author: Taufik Nurrohman
 type: Markdown
-version: 1.0.2
+version: 1.1.0
 
 use:
   '.\lot\x\comment': 1
