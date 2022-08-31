@@ -13,8 +13,8 @@ function comment__guard($content, $path, $query, $hash) {
     if ($content) {
         $content = \strip_tags($content);
         /* if (\preg_match('/[ЁёА-я]{2,}/', $content)) {
-            ++$error;
             \class_exists("\\Alert") && \Alert::error('Sorry for being racist. You can use regular alphabet to prevent this alert.');
+            ++$error;
         } else */ if (
             false !== \strpos($content, '://') &&
             \preg_match_all('/\bhttps?:\/\/\S+/', $content, $m)
@@ -117,7 +117,7 @@ function comment__guard($content, $path, $query, $hash) {
             'zonnet' => 1
         ];
         if (!isset($hosts[$host])) {
-            \Alert::error('Blocked email address: %s', ['<mark>' . $email . '</mark>']);
+            \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . $email . '</mark>']);
             ++$error;
         } else {
             foreach (\stream(__DIR__ . \D . 'email.txt') as $v) {
@@ -125,7 +125,7 @@ function comment__guard($content, $path, $query, $hash) {
                     continue;
                 }
                 if ($v === $email) {
-                    \Alert::error('Blocked email address: %s', ['<mark>' . $v . '</mark>']);
+                    \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . $v . '</mark>']);
                     ++$error;
                     break;
                 }
