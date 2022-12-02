@@ -15,16 +15,7 @@ function comment__guard($content, $path, $query, $hash) {
         /* if (\preg_match('/[ЁёА-я]{2,}/', $content)) {
             \class_exists("\\Alert") && \Alert::error('Sorry for being racist. You can use regular alphabet to prevent this alert.');
             ++$error;
-        } else */ if (
-            false !== \strpos($content, '://') &&
-            \preg_match_all('/\bhttps?:\/\/\S+/', $content, $m)
-        ) {
-            // The maximum link(s) in comment is `5`
-            if (\count($m[0]) > 5) {
-                \class_exists("\\Alert") && \Alert::error('Too many links in the comment.');
-                ++$error;
-            }
-        } else {
+        } else */ if (1) {
             foreach (\stream(__DIR__ . \D . 'content.txt') as $v) {
                 if ("" === ($v = \trim($v))) {
                     continue;
