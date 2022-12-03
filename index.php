@@ -6,25 +6,52 @@ function comment__guard($content, $path, $query, $hash) {
     }
     $error = 0;
     $lot = (array) ($_POST['comment'] ?? []);
+    $author = $lot['author'] ?? "";
     $content = $lot['content'] ?? "";
     $email = $lot['email'] ?? "";
     $ip = \ip();
     $link = $lot['link'] ?? "";
-    if ($content) {
-        $content = \strip_tags($content);
-        /* if (\preg_match('/[ЁёА-я]{2,}/', $content)) {
-            \class_exists("\\Alert") && \Alert::error('Sorry for being racist. You can use regular alphabet to prevent this alert.');
-            ++$error;
-        } else */ if (1) {
-            foreach (\stream(__DIR__ . \D . 'content.txt') as $v) {
-                if ("" === ($v = \trim($v))) {
-                    continue;
-                }
-                if (false !== \stripos($content, $v)) {
-                    \class_exists("\\Alert") && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+    if ($author) {
+        $author = \strip_tags($author);
+        foreach (\stream(__DIR__ . \D . 'author.txt') as $v) {
+            if ("" === ($v = \trim($v))) {
+                continue;
+            }
+            // Check for exact value if the data is surrounded by double quote character(s)
+            if (0 === \strpos($v, '"') && '"' === \substr($v, -1)) {
+                if ($author === \substr(\strtr($v, ["\\\"" => '"']), 1, -1)) {
+                    \class_exists("\\Alert") && \Alert::error('Blocked author name: %s', ['<mark>' . \htmlspecialchars($author) . '</mark>']);
                     ++$error;
                     break;
                 }
+            }
+            // Check if author name contains the data as part of it
+            if (false !== \stripos($author, $v)) {
+                \class_exists("\\Alert") && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                ++$error;
+                break;
+            }
+        }
+    }
+    if ($content) {
+        $content = \strip_tags($content);
+        foreach (\stream(__DIR__ . \D . 'content.txt') as $v) {
+            if ("" === ($v = \trim($v))) {
+                continue;
+            }
+            // Check for exact value if the data is surrounded by double quote character(s)
+            if (0 === \strpos($v, '"') && '"' === \substr($v, -1)) {
+                if ($content === \substr(\strtr($v, ["\\\"" => '"']), 1, -1)) {
+                    \class_exists("\\Alert") && \Alert::error('Blocked comment content: %s', ['<mark>' . \htmlspecialchars($content) . '</mark>']);
+                    ++$error;
+                    break;
+                }
+            }
+            // Check if comment content contains the data as part of it
+            if (false !== \stripos($content, $v)) {
+                \class_exists("\\Alert") && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                ++$error;
+                break;
             }
         }
     }
@@ -108,7 +135,7 @@ function comment__guard($content, $path, $query, $hash) {
             'zonnet' => 1
         ];
         if (!isset($hosts[$host])) {
-            \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . $email . '</mark>']);
+            \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . \htmlspecialchars($email) . '</mark>']);
             ++$error;
         } else {
             foreach (\stream(__DIR__ . \D . 'email.txt') as $v) {
@@ -116,7 +143,7 @@ function comment__guard($content, $path, $query, $hash) {
                     continue;
                 }
                 if ($v === $email) {
-                    \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . $v . '</mark>']);
+                    \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                     ++$error;
                     break;
                 }
@@ -129,7 +156,7 @@ function comment__guard($content, $path, $query, $hash) {
                 continue;
             }
             if ($v === $ip) {
-                \class_exists("\\Alert") && \Alert::error('Blocked internet protocol address: %s', ['<mark>' . $v . '</mark>']);
+                \class_exists("\\Alert") && \Alert::error('Blocked internet protocol address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                 ++$error;
                 break;
             }
@@ -155,7 +182,7 @@ function comment__guard($content, $path, $query, $hash) {
                 continue;
             }
             if ($v === $link) {
-                \class_exists("\\Alert") && \Alert::error('Blocked link address: %s', ['<mark>' . $v . '</mark>']);
+                \class_exists("\\Alert") && \Alert::error('Blocked link address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                 ++$error;
                 break;
             }
