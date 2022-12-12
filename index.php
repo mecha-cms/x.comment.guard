@@ -1,5 +1,10 @@
 <?php namespace x;
 
+// Disable this extension if `comment` extension is disabled or removed ;)
+if (!isset($state->x->comment)) {
+    return;
+}
+
 function comment__guard($content, $path, $query, $hash) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $content;
