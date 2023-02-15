@@ -2,6 +2,7 @@
 title: Comment Guard
 description: Common security tasks for the comment extension.
 icon: 'M9 22C8.4 22 8 21.6 8 21V18H4C2.9 18 2 17.1 2 16V4C2 2.9 2.9 2 4 2H20C21.1 2 22 2.9 22 4V16C22 17.1 21.1 18 20 18H13.9L10.2 21.7C10 21.9 9.8 22 9.5 22H9M13 11V5H11V11M13 15V13H11V15H13Z'
+color: '#167144'
 author: Taufik Nurrohman
 type: Markdown
 version: 1.2.0
@@ -10,10 +11,17 @@ use:
   '.\lot\x\comment': 1
 ...
 
-This extension prevents users from publishing a comment based on certain criteria. For example, preventing users from writing more than five links in comments, blocking users coming from certain IP or email addresses, preventing users from writing certain words or sentences in comments, etc.
+This extension prevents users from publishing a comment based on certain criteria. For example, preventing users from
+writing more than five links in comments, blocking users coming from certain IP or email addresses, preventing users
+from writing certain words or sentences in comments, etc.
 
- - Write IP addresses of the users you want to block in the `.\lot\x\comment.guard\i-p.txt` file, each separated by a line break.
- - Write a list of words that you want to block in the `.\lot\x\comment.guard\content.txt` file, each separated by a line break. This file is not case-sensitive.
- - Write author names that you want to block in the `.\lot\x\comment.guard\author.txt` file, each separated by a line break. This file is not case-sensitive.
- - Write email addresses of the users you want to block in the `.\lot\x\comment.guard\email.txt` file, each separated by a line break.
- - Write link addresses of the users you want to block in the `.\lot\x\comment.guard\link.txt` file, each separated by a line break.
+ - Write IP addresses of the users you want to block in the `.\lot\x\comment.guard\i-p.txt` file, each separated by a
+   line break.
+ - Write a list of words that you want to block in the `.\lot\x\comment.guard\content.txt` file, each separated by a
+   line break. This file is not case-sensitive.
+ - Write author names that you want to block in the `.\lot\x\comment.guard\author.txt` file, each separated by a line
+   break. This file is not case-sensitive.
+ - Write email addresses of the users you want to block in the `.\lot\x\comment.guard\email.txt` file, each separated by
+   a line break.
+ - Write link addresses of the users you want to block in the `.\lot\x\comment.guard\link.txt` file, each separated by a
+   line break.
