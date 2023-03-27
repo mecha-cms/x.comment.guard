@@ -6,9 +6,6 @@ color: '#79a00e'
 author: Taufik Nurrohman
 type: Markdown
 version: 1.2.0
-
-use:
-  '.\lot\x\comment': 1
 ...
 
 This extension prevents users from publishing a comment based on certain criteria. For example, preventing users from
