@@ -1,11 +1,11 @@
-<?php namespace x;
+<?php namespace x\comment__guard;
 
 // Disable this extension if `comment` extension is disabled or removed ;)
 if (!isset($state->x->comment)) {
     return;
 }
 
-function comment__guard($content, $path, $query, $hash) {
+function route($content, $path, $query, $hash) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $content;
     }
@@ -201,4 +201,4 @@ function comment__guard($content, $path, $query, $hash) {
     return $content;
 }
 
-\Hook::set('route.comment', __NAMESPACE__ . "\\comment__guard", 0);
+\Hook::set('route.comment', __NAMESPACE__ . "\\route", 0);
