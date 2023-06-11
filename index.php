@@ -9,6 +9,7 @@ function route__comment($content, $path, $query, $hash) {
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
         return $content;
     }
+    $can_alert = \class_exists("\\Alert");
     $error = 0;
     $lot = (array) ($_POST['comment'] ?? []);
     $author = $lot['author'] ?? "";
@@ -17,7 +18,7 @@ function route__comment($content, $path, $query, $hash) {
     $ip = \ip();
     $link = $lot['link'] ?? "";
     if ($author) {
-        $author = \strip_tags($author);
+        $author = \trim(\strip_tags($author));
         foreach (\stream(__DIR__ . \D . 'author.txt') as $v) {
             if ("" === ($v = \trim($v))) {
                 continue;
@@ -25,21 +26,21 @@ function route__comment($content, $path, $query, $hash) {
             // Check for exact value if the data is surrounded by double quote character(s)
             if (0 === \strpos($v, '"') && '"' === \substr($v, -1)) {
                 if ($author === \substr(\strtr($v, ["\\\"" => '"']), 1, -1)) {
-                    \class_exists("\\Alert") && \Alert::error('Blocked author name: %s', ['<mark>' . \htmlspecialchars($author) . '</mark>']);
+                    $can_alert && \Alert::error('Blocked author name: %s', ['<mark>' . \htmlspecialchars($author) . '</mark>']);
                     ++$error;
                     break;
                 }
             }
             // Check if author name contains the data as part of it
             if (false !== \stripos($author, $v)) {
-                \class_exists("\\Alert") && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                $can_alert && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                 ++$error;
                 break;
             }
         }
     }
     if ($content) {
-        $content = \strip_tags($content);
+        $content = \trim(\strip_tags($content));
         foreach (\stream(__DIR__ . \D . 'content.txt') as $v) {
             if ("" === ($v = \trim($v))) {
                 continue;
@@ -47,14 +48,14 @@ function route__comment($content, $path, $query, $hash) {
             // Check for exact value if the data is surrounded by double quote character(s)
             if (0 === \strpos($v, '"') && '"' === \substr($v, -1)) {
                 if ($content === \substr(\strtr($v, ["\\\"" => '"']), 1, -1)) {
-                    \class_exists("\\Alert") && \Alert::error('Blocked comment content: %s', ['<mark>' . \htmlspecialchars($content) . '</mark>']);
+                    $can_alert && \Alert::error('Blocked comment content: %s', ['<mark>' . \htmlspecialchars($content) . '</mark>']);
                     ++$error;
                     break;
                 }
             }
             // Check if comment content contains the data as part of it
             if (false !== \stripos($content, $v)) {
-                \class_exists("\\Alert") && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                $can_alert && \Alert::error('Please use other words: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                 ++$error;
                 break;
             }
@@ -64,6 +65,7 @@ function route__comment($content, $path, $query, $hash) {
         $host = \strtok(\explode('@', $email, 2)[1] ?? "", '.');
         // <https://email-verify.my-addr.com/list-of-most-popular-email-domains.php>
         // <https://email-verify.my-addr.com/top-email-service-providers.php>
+        // TODO: Make these host name(s) configurable via `state.php` file.
         $hosts = [
             'aim' => 1,
             'alice' => 1,
@@ -140,7 +142,7 @@ function route__comment($content, $path, $query, $hash) {
             'zonnet' => 1
         ];
         if (!isset($hosts[$host])) {
-            \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . \htmlspecialchars($email) . '</mark>']);
+            $can_alert && \Alert::error('Blocked email address: %s', ['<mark>' . \htmlspecialchars($email) . '</mark>']);
             ++$error;
         } else {
             foreach (\stream(__DIR__ . \D . 'email.txt') as $v) {
@@ -148,7 +150,7 @@ function route__comment($content, $path, $query, $hash) {
                     continue;
                 }
                 if ($v === $email) {
-                    \class_exists("\\Alert") && \Alert::error('Blocked email address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                    $can_alert && \Alert::error('Blocked email address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                     ++$error;
                     break;
                 }
@@ -156,18 +158,18 @@ function route__comment($content, $path, $query, $hash) {
         }
     }
     if ($ip) {
-        foreach (\stream(__DIR__ . \D . 'ip.txt') as $v) {
+        foreach (\stream(__DIR__ . \D . 'i-p.txt') as $v) {
             if ("" === ($v = \trim($v))) {
                 continue;
             }
             if ($v === $ip) {
-                \class_exists("\\Alert") && \Alert::error('Blocked internet protocol address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                $can_alert && \Alert::error('Blocked internet protocol address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                 ++$error;
                 break;
             }
         }
     }
-    // Make sure link value is in the form of base URL
+    // Make sure that the link value is in the form of a base URL
     if ($link) {
         if (
             // `http://example.com?a=b`
@@ -179,7 +181,7 @@ function route__comment($content, $path, $query, $hash) {
             // `http://example.com/a`
             \substr_count(\rtrim($link, '/'), '/') > 2
         ) {
-            \class_exists("\\Alert") && \Alert::error('Link must be in the form of base URL. Links that point to a specific page is not allowed.');
+            $can_alert && \Alert::error('Link must be in the form of a base URL. Links that point to a specific page are not allowed.');
             ++$error;
         }
         foreach (\stream(__DIR__ . \D . 'link.txt') as $v) {
@@ -187,7 +189,7 @@ function route__comment($content, $path, $query, $hash) {
                 continue;
             }
             if ($v === $link) {
-                \class_exists("\\Alert") && \Alert::error('Blocked link address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
+                $can_alert && \Alert::error('Blocked link address: %s', ['<mark>' . \htmlspecialchars($v) . '</mark>']);
                 ++$error;
                 break;
             }

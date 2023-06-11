@@ -8,17 +8,17 @@ type: Markdown
 version: 1.2.0
 ...
 
-This extension prevents users from publishing a comment based on certain criteria. For example, preventing users from
-writing more than five links in comments, blocking users coming from certain IP or email addresses, preventing users
-from writing certain words or sentences in comments, etc.
+This extension prevents users from publishing a comment based on certain criteria. For example, prevent users from
+including more than five links in comments, block users from certain IP or email addresses, prevent users from including
+certain words or phrases in comments, etc.
 
- - Write IP addresses of the users you want to block in the `.\lot\x\comment.guard\i-p.txt` file, each separated by a
-   line break.
- - Write a list of words that you want to block in the `.\lot\x\comment.guard\content.txt` file, each separated by a
-   line break. This file is not case-sensitive.
- - Write author names that you want to block in the `.\lot\x\comment.guard\author.txt` file, each separated by a line
+ - In the `.\lot\x\comment.guard\author.txt`, write the names of the authors you want to block, separated by a line
    break. This file is not case-sensitive.
- - Write email addresses of the users you want to block in the `.\lot\x\comment.guard\email.txt` file, each separated by
+ - In the `.\lot\x\comment.guard\content.txt` file, write a list of words you want to block, each separated by a line
+   break. This file is not case-sensitive.
+ - In the `.\lot\x\comment.guard\email.txt` file, type the email addresses of the users you want to block, separated by
    a line break.
- - Write link addresses of the users you want to block in the `.\lot\x\comment.guard\link.txt` file, each separated by a
+ - In the `.\lot\x\comment.guard\i-p.txt` file, type the IP addresses of the users you want to block, separated by a
+   line break.
+ - In the `.\lot\x\comment.guard\link.txt` file, type the link addresses of the users you want to block, separated by a
    line break.
