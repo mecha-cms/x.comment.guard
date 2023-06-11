@@ -1,5 +1,5 @@
 {
-  "description": "Common security tasks for the comment extension.",
+  "description": "Common security tasks for comment extension.",
   "license": "GPL-3.0-or-later",
   "name": "mecha-cms/x.comment.guard",
   "require": {
