@@ -62,7 +62,7 @@ function route__comment($content, $path, $query, $hash) {
         }
     }
     if ($email) {
-        $host = \strtok(\explode('@', $email, 2)[1] ?? "", '.');
+        $host = \strstr(\substr((string) \strstr($email, '@'), 1), '.', true);
         // <https://email-verify.my-addr.com/list-of-most-popular-email-domains.php>
         // <https://email-verify.my-addr.com/top-email-service-providers.php>
         // TODO: Make these host name(s) configurable via `state.php` file.
