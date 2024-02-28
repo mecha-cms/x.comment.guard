@@ -5,7 +5,7 @@ icon: 'M9 22C8.4 22 8 21.6 8 21V18H4C2.9 18 2 17.1 2 16V4C2 2.9 2.9 2 4 2H20C21.
 color: '#79a00e'
 author: Taufik Nurrohman
 type: Markdown
-version: 1.2.0
+version: 1.2.1
 ...
 
 This extension prevents users from publishing a comment based on certain criteria. For example, prevent users from
